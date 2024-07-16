@@ -8,11 +8,9 @@ export function expand(
     if (str[j] === "$") {
       buffer += str.slice(i, j);
       const { key, length } = getTemplateKey(str.slice(j + 1));
-      if (key === "" && length > 0) {
-        // Invalid template, do nothing
-      } else if (key === "") {
+      if (key === "") {
         // $ not followed by a valid template, just add the $ to the buffer
-        buffer += str[j];
+        buffer += str.slice(j, j + length + 1);
       } else {
         buffer += mapping[key] ?? "";
       }
@@ -38,12 +36,13 @@ function getTemplateKey(str: string): { key: string; length: number } {
       return { key: "", length: 2 };
     } else if (end === -1) {
       // Invalid template ${key
-      return { key: str.slice(1), length: 1 };
+      const key = str.slice(0);
+      return { key: "", length: key.length };
     }
     return { key: str.slice(1, end), length: end + 1 };
   }
   if (isShellSpecialVar(str[0])) {
-    return { key: str[0], length: 1 };
+    return { key: "", length: 0 };
   }
   let i = 0;
   while (i < str.length && isAlphaNumeric(str[i])) {
