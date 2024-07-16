@@ -1,4 +1,4 @@
-import { expand } from "../src/index";
+import { expand, expandEnv } from "../src/index";
 
 describe("expand", () => {
   describe("when no template is found", () => {
@@ -68,5 +68,37 @@ describe("expand", () => {
         ).toBe("Hello, World! My name is Osama.");
       });
     });
+
+    describe("when variable is not in mapping", () => {
+      it("should replace the template with an empty string", () => {
+        expect(expand("Hello, $name!", {})).toBe("Hello, !");
+      });
+    });
+
+    describe("when variable in mapping is also a template", () => {
+      it("should replace the found template with the template from the mapping without expansion", () => {
+        expect(expand("Hello, $name!", { name: "$other_name" })).toBe(
+          "Hello, $other_name!"
+        );
+      });
+    });
+  });
+});
+
+describe("expandEnv", () => {
+  const OLD_ENV = process.env;
+
+  beforeEach(() => {
+    jest.resetModules();
+    process.env = { ...OLD_ENV };
+  });
+
+  afterAll(() => {
+    process.env = OLD_ENV;
+  });
+
+  it("should replace the template with the value from the process.env", () => {
+    process.env.name = "World";
+    expect(expandEnv("Hello, $name!")).toBe("Hello, World!");
   });
 });
