@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
+    "test:watch": "jest --watch",
     "prebuild": "tsc",
     "build": "babel src --out-dir dist --extensions \".ts\""
   },
