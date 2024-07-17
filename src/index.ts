@@ -46,6 +46,9 @@ export function expand(
 /**
  * The function `expandEnv` takes a string as input and expands any environment variables present in the string using the
  * `process.env` object in runtime.
+ *
+ * This is an alias for `expand(str, process.env)`.
+ *
  * @param {string} str - A string that may contain environment variable references to be expanded in the form of `${key}`
  * or `$key` where `key` is an environment variable.
  * @returns The string with the environment variables expanded.
