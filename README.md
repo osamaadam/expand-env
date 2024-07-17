@@ -12,19 +12,19 @@ npm install explode-env
 
 ## Usage
 
-### expand
+### explode
 
 ```ts
-import { expand } from 'explode-env';
+import { explode } from 'explode-env';
 
 // Works with ${USER} and $USER
-const expanded = expand('Hello, $USER!', { USER: 'world' });
+const expanded = explode('Hello, $USER!', { USER: 'world' });
 console.log(expanded); // Hello, world!
 ```
 
 ### explodeEnv
 
-Alias for `expand` with `process.env` as the second argument.
+Alias for `explode` with `process.env` as the second argument.
 
 ```ts
 import { explodeEnv } from 'explode-env';
