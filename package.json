@@ -7,7 +7,8 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "build": "babel src --out-dir dist --extensions \".ts\"",
-    "postbuild": "tsc"
+    "postbuild": "tsc",
+    "prepublish": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -21,7 +22,8 @@
     "variables",
     "replace",
     "expand",
-    "expandenv"
+    "explode",
+    "explodeEnv"
   ],
   "bugs": {
     "url": "https://github.com/osamaadam/explode-env/issues"

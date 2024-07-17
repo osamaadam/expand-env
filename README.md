@@ -22,14 +22,14 @@ const expanded = expand('Hello, $USER!', { USER: 'world' });
 console.log(expanded); // Hello, world!
 ```
 
-### expandEnv
+### explodeEnv
 
 Alias for `expand` with `process.env` as the second argument.
 
 ```ts
-import { expandEnv } from 'explode-env';
+import { explodeEnv } from 'explode-env';
 
-const expanded = expandEnv('Hello, $USER!');
+const expanded = explodeEnv('Hello, $USER!');
 console.log(expanded); // Hello, <your username>!
 ```
 
