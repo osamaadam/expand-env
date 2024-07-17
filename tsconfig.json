@@ -1,14 +1,16 @@
 {
   "compilerOptions": {
     "declaration": true,
+    "emitDeclarationOnly": true,
     "isolatedModules": true,
     "target": "ES2015",
     "strict": true,
     "noImplicitAny": true,
-    "noEmit": true,
     "esModuleInterop": true,
     "rootDir": "./src",
+    "outDir": "./dist",
     "moduleResolution": "node"
   },
-  "exclude": ["node_modules", "__tests__"]
+  "include": ["src"],
+  "exclude": ["node_modules", "__tests__", "dist"]
 }
