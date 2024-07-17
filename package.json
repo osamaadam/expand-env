@@ -15,6 +15,14 @@
   },
   "author": "Osama Adam (https://github.com/osamaadam)",
   "license": "MIT",
+  "keywords": [
+    "env",
+    "environment",
+    "variables",
+    "replace",
+    "expand",
+    "expandenv"
+  ],
   "bugs": {
     "url": "https://github.com/osamaadam/expand-env/issues"
   },
