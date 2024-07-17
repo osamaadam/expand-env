@@ -1,4 +1,4 @@
-# expand-env
+# explode-env
 
 This is a simple utility to expand environment variables in a string, heavily inspired by Golang's [os.Expand](https://pkg.go.dev/os#Expand).
 
@@ -7,7 +7,7 @@ Regex free, and no dependencies. If you need to expand environment variables in 
 ## Installation
 
 ```sh
-npm install expand-env
+npm install explode-env
 ```
 
 ## Usage
@@ -15,7 +15,7 @@ npm install expand-env
 ### expand
 
 ```ts
-import { expand } from 'expand-env';
+import { expand } from 'explode-env';
 
 // Works with ${USER} and $USER
 const expanded = expand('Hello, $USER!', { USER: 'world' });
@@ -27,7 +27,7 @@ console.log(expanded); // Hello, world!
 Alias for `expand` with `process.env` as the second argument.
 
 ```ts
-import { expandEnv } from 'expand-env';
+import { expandEnv } from 'explode-env';
 
 const expanded = expandEnv('Hello, $USER!');
 console.log(expanded); // Hello, <your username>!

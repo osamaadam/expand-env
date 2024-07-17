@@ -1,39 +1,39 @@
-import { expand, expandEnv } from "../src/index";
+import { explode, explodeEnv } from "../src/index";
 
-describe("expand", () => {
+describe("explode", () => {
   describe("when no template is found", () => {
     it("should return the same string", () => {
-      expect(expand("Hello, World!", {})).toBe("Hello, World!");
+      expect(explode("Hello, World!", {})).toBe("Hello, World!");
     });
 
     it('should not replace "$"', () => {
-      expect(expand("Hello, $!", {})).toBe("Hello, $!");
+      expect(explode("Hello, $!", {})).toBe("Hello, $!");
     });
 
     it('should not replace "$$"', () => {
-      expect(expand("Hello, $$!", {})).toBe("Hello, $$!");
+      expect(explode("Hello, $$!", {})).toBe("Hello, $$!");
     });
 
     it('should not replace "${"', () => {
-      expect(expand("Hello, ${!", {})).toBe("Hello, ${!");
+      expect(explode("Hello, ${!", {})).toBe("Hello, ${!");
     });
 
     it('should not replace "${}"', () => {
-      expect(expand("Hello, ${}!", {})).toBe("Hello, ${}!");
+      expect(explode("Hello, ${}!", {})).toBe("Hello, ${}!");
     });
   });
 
   describe("when template is found", () => {
     describe("when template is $variable", () => {
       it("should replace the template with the value from the object", () => {
-        expect(expand("Hello, $name!", { name: "World" })).toBe(
+        expect(explode("Hello, $name!", { name: "World" })).toBe(
           "Hello, World!"
         );
       });
 
       it("should replace multiple templates", () => {
         expect(
-          expand("Hello, $name! My name is $myName.", {
+          explode("Hello, $name! My name is $myName.", {
             name: "World",
             myName: "Osama",
           })
@@ -43,14 +43,14 @@ describe("expand", () => {
 
     describe("when template is ${variable}", () => {
       it("should replace the template with the value from the object", () => {
-        expect(expand("Hello, ${name}!", { name: "World" })).toBe(
+        expect(explode("Hello, ${name}!", { name: "World" })).toBe(
           "Hello, World!"
         );
       });
 
       it("should replace multiple templates", () => {
         expect(
-          expand("Hello, ${name}! My name is ${myName}.", {
+          explode("Hello, ${name}! My name is ${myName}.", {
             name: "World",
             myName: "Osama",
           })
@@ -61,7 +61,7 @@ describe("expand", () => {
     describe("when template is mixed", () => {
       it("should replace the template with the value from the object", () => {
         expect(
-          expand("Hello, $name! My name is ${myName}.", {
+          explode("Hello, $name! My name is ${myName}.", {
             name: "World",
             myName: "Osama",
           })
@@ -71,13 +71,13 @@ describe("expand", () => {
 
     describe("when variable is not in mapping", () => {
       it("should replace the template with an empty string", () => {
-        expect(expand("Hello, $name!", {})).toBe("Hello, !");
+        expect(explode("Hello, $name!", {})).toBe("Hello, !");
       });
     });
 
     describe("when variable in mapping is also a template", () => {
       it("should replace the found template with the template from the mapping without expansion", () => {
-        expect(expand("Hello, $name!", { name: "$other_name" })).toBe(
+        expect(explode("Hello, $name!", { name: "$other_name" })).toBe(
           "Hello, $other_name!"
         );
       });
@@ -85,7 +85,7 @@ describe("expand", () => {
   });
 });
 
-describe("expandEnv", () => {
+describe("explodeEnv", () => {
   const OLD_ENV = process.env;
 
   beforeEach(() => {
@@ -99,6 +99,6 @@ describe("expandEnv", () => {
 
   it("should replace the template with the value from the process.env", () => {
     process.env.name = "World";
-    expect(expandEnv("Hello, $name!")).toBe("Hello, World!");
+    expect(explodeEnv("Hello, $name!")).toBe("Hello, World!");
   });
 });

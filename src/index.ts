@@ -1,23 +1,23 @@
 /**
- * The function `expand` takes a string and a mapping object, replaces placeholders in the string with values from the
- * mapping, and returns the expanded string.
+ * The function `explode` takes a string and a mapping object, replaces placeholders in the string with values from the
+ * mapping, and returns the exploded string.
  * @param {string} str - The `str` parameter is a string that may contain placeholders in the form of `${key}` or `$key`,
  * where `key` is a key that corresponds to a value in the `mapping` object.
- * The function `expand` replaces these placeholders with the
- * corresponding values from the `mapping` object and returns the expanded
- * @param mapping - The `mapping` parameter is an object that maps keys to their corresponding values. In the `expand`
+ * The function `explode` replaces these placeholders with the
+ * corresponding values from the `mapping` object and returns the explodeed
+ * @param mapping - The `mapping` parameter is an object that maps keys to their corresponding values. In the `explode`
  * function, it is used to replace placeholders in the `str` parameter with actual values. If a key in the mapping object
  * matches a placeholder in the string, the placeholder is replaced with the corresponding
- * @returns The `expand` function returns a string with placeholders replaced by values from the `mapping` object.
+ * @returns The `explode` function returns a string with placeholders replaced by values from the `mapping` object.
  * If a placeholder does not have a corresponding key in the `mapping` object, it is replaced with an empty string.
  *
  * @example
- * expand("Hello, $name!", { name: "World" }); // "Hello, World!"
+ * explode("Hello, $name!", { name: "World" }); // "Hello, World!"
  *
  * @example
- * expand("Hello, ${name}!", { name: "World" }); // "Hello, World!"
+ * explode("Hello, ${name}!", { name: "World" }); // "Hello, World!"
  */
-export function expand(
+export function explode(
   str: string,
   mapping: Record<string, string | undefined>
 ): string {
@@ -44,24 +44,24 @@ export function expand(
 }
 
 /**
- * The function `expandEnv` takes a string as input and expands any environment variables present in the string using the
+ * The function `explodeEnv` takes a string as input and expands any environment variables present in the string using the
  * `process.env` object in runtime.
  *
- * This is an alias for `expand(str, process.env)`.
+ * This is an alias for `explode(str, process.env)`.
  *
- * @param {string} str - A string that may contain environment variable references to be expanded in the form of `${key}`
+ * @param {string} str - A string that may contain environment variable references to be explodeed in the form of `${key}`
  * or `$key` where `key` is an environment variable.
- * @returns The string with the environment variables expanded.
+ * @returns The string with the environment variables explodeed.
  * Keys with no corresponding environment variable will be replaced with an empty string.
  *
  * @example
- * expandEnv("Hello, $USER!"); // "Hello, username!"
+ * explodeEnv("Hello, $USER!"); // "Hello, username!"
  *
  * @example
- * expandEnv("Hello, ${USER}!"); // "Hello, username!"
+ * explodeEnv("Hello, ${USER}!"); // "Hello, username!"
  */
-export function expandEnv(str: string): string {
-  return expand(str, process.env);
+export function explodeEnv(str: string): string {
+  return explode(str, process.env);
 }
 
 function getTemplateKey(str: string): { key: string; length: number } {
