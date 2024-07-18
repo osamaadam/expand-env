@@ -39,6 +39,15 @@ console.log(expanded); // Hello, <your username>!
 npm test
 ```
 
+## Publishing a new version
+
+```sh
+npm version <major|minor|patch>
+git push --tags
+```
+
+Then, GitHub Actions will take care of the rest.
+
 ## License
 
 [MIT](LICENSE)
