@@ -1,6 +1,6 @@
 {
   "name": "explode-env",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Replace environment variables within text",
   "main": "dist/index.js",
   "scripts": {
