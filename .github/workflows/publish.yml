@@ -3,10 +3,18 @@ on:
   push:
     tags:
       - 'v*'
+    branches:
+      - main
+  workflow_run:
+    workflows:
+      - "Run Tests"
+    types:
+      - completed
 
 jobs:
-  test:
+  publish:
     runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
       - uses: actions/checkout@v4
       - name: Use Node.js
