@@ -12,7 +12,7 @@ type Options = {
   /**
    * If `true`, the function will ignore parameter expansion in the form of `${key:-defaultValue}` or `${key:=defaultValue}.
    *
-   * @see https://pubs.opengroup.org/onlinepubs/009695399/utilities/xcu_chap02.html#tag_02_06_02
+   * @see {@link https://pubs.opengroup.org/onlinepubs/009695399/utilities/xcu_chap02.html#tag_02_06_02}
    *
    * @default false
    * @example
