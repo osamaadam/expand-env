@@ -8,10 +8,27 @@ type Options = {
    * console.log(exploded) // "Hello, $name! or you"
    */
   ignoreUnsetVars?: boolean;
+
+  /**
+   * If `true`, the function will ignore parameter expansion in the form of `${key:-defaultValue}` or `${key:=defaultValue}.
+   *
+   * @see https://pubs.opengroup.org/onlinepubs/009695399/utilities/xcu_chap02.html#tag_02_06_02
+   *
+   * @default false
+   * @example
+   * const exploded = explode("Hello, ${name:=World}!", {}, { ignoreDefaultExpansion: true });
+   * console.log(exploded) // "Hello, !"
+   *
+   * @example
+   * const exploded = explode("Hello, ${name:=World}!", {}, { ignoreDefaultExpansion: false });
+   * console.log(exploded) // "Hello, World!"
+   */
+  ignoreDefaultExpansion?: boolean;
 };
 
 const DEFAULT_OPTIONS: Options = {
   ignoreUnsetVars: false,
+  ignoreDefaultExpansion: false,
 };
 
 /**
@@ -53,7 +70,7 @@ export function explode(
         if (realKey in mapping) {
           buffer += mapping[realKey];
         } else {
-          if (defaultValue) {
+          if (defaultValue && !options.ignoreDefaultExpansion) {
             buffer += defaultValue;
           } else if (options.ignoreUnsetVars) {
             buffer += str.slice(j, j + length + 1);
@@ -61,6 +78,7 @@ export function explode(
         }
 
         if (
+          !options.ignoreDefaultExpansion &&
           !(realKey in mapping) &&
           defaultValue?.length &&
           key.includes(":=")

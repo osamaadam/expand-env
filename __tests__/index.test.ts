@@ -157,6 +157,38 @@ describe("explode", () => {
           });
         });
       });
+
+      describe("ignoreDefaultExpansion", () => {
+        describe("when true", () => {
+          it("should not replace the template with the default value", () => {
+            expect(
+              explode(
+                "Hello, ${name:=World}!",
+                {},
+                { ignoreDefaultExpansion: true }
+              )
+            ).toBe("Hello, !");
+          });
+        });
+
+        describe("when false", () => {
+          it("should replace the template with the default value", () => {
+            expect(
+              explode(
+                "Hello, ${name:=World}!",
+                {},
+                { ignoreDefaultExpansion: false }
+              )
+            ).toBe("Hello, World!");
+          });
+        });
+
+        describe("when not set", () => {
+          it("should replace the template with the default value", () => {
+            expect(explode("Hello, ${name:=World}!", {})).toBe("Hello, World!");
+          });
+        });
+      });
     });
   });
 });
