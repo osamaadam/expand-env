@@ -55,6 +55,41 @@ const expanded = explode(
 console.log(expanded); // Hello, $USER!, and User X, User Y!
 ```
 
+#### ignoreDefaultExpansion
+
+If `true`, default expansion in the form of `${var:-default}` or `${var:=default}` will not be expanded.
+
+> Note: This will NOT work with $var:-default or $var:=default.
+> For reference: <https://pubs.opengroup.org/onlinepubs/009695399/utilities/xcu_chap02.html#tag_02_06_02>
+
+```ts
+import { explode } from "explode-env";
+
+const expanded = explode(
+  "Hello, ${WORLD:=World}! Welcome ${WORLD}!"
+  {},
+  {
+    ignoreDefaultExpansion: false,
+  }
+);
+
+console.log(expanded); // Hello, World! Welcome World!
+```
+
+```ts
+import { explode } from "explode-env";
+
+const expanded = explode(
+  "Hello, ${WORLD:=World}! Welcome ${WORLD}!"
+  {},
+  {
+    ignoreDefaultExpansion: true,
+  }
+);
+
+console.log(expanded); // Hello, ! Welcome !
+```
+
 ## Running tests
 
 ```sh
