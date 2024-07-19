@@ -82,6 +82,28 @@ describe("explode", () => {
         );
       });
     });
+
+    describe("options", () => {
+      describe("ignoreUnsetVars", () => {
+        describe("when true", () => {
+          it("should not replace the template with an empty string", () => {
+            expect(
+              explode("Hello, $name!", {}, { ignoreUnsetVars: true })
+            ).toBe("Hello, $name!");
+          });
+          describe("when false", () => {
+            it("should replace the template with an empty string", () => {
+              expect(explode("Hello, $name!", {})).toBe("Hello, !");
+            });
+          });
+        });
+        describe("when not set", () => {
+          it("should replace the template with an empty string", () => {
+            expect(explode("Hello, $name!", {})).toBe("Hello, !");
+          });
+        });
+      });
+    });
   });
 });
 

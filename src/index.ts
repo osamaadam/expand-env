@@ -1,3 +1,19 @@
+type Options = {
+  /**
+   * If `true`, the function will not replace placeholders that do not have a corresponding key in the `mapping` object.
+   *
+   * @default false
+   * @example
+   * const exploded = explode("Hello, $name! or $USER", { USER: "you" }, { ignoreUnsetVars: true });
+   * console.log(exploded) // "Hello, $name! or you"
+   */
+  ignoreUnsetVars?: boolean;
+};
+
+const DEFAULT_OPTIONS: Options = {
+  ignoreUnsetVars: false,
+};
+
 /**
  * The function `explode` takes a string and a mapping object, replaces placeholders in the string with values from the
  * mapping, and returns the exploded string.
@@ -8,6 +24,7 @@
  * @param mapping - The `mapping` parameter is an object that maps keys to their corresponding values. In the `explode`
  * function, it is used to replace placeholders in the `str` parameter with actual values. If a key in the mapping object
  * matches a placeholder in the string, the placeholder is replaced with the corresponding
+ * @param options - The `options` parameter is an optional object that can be used to configure the behavior of the `explode`
  * @returns The `explode` function returns a string with placeholders replaced by values from the `mapping` object.
  * If a placeholder does not have a corresponding key in the `mapping` object, it is replaced with an empty string.
  *
@@ -19,7 +36,8 @@
  */
 export function explode(
   str: string,
-  mapping: Record<string, string | undefined>
+  mapping: Record<string, string | undefined>,
+  options: Options = DEFAULT_OPTIONS
 ): string {
   let buffer = "";
   let i = 0;
@@ -31,7 +49,13 @@ export function explode(
         // $ not followed by a valid template, just add the $ to the buffer
         buffer += str.slice(j, j + length + 1);
       } else {
-        buffer += mapping[key] ?? "";
+        if (key in mapping) {
+          buffer += mapping[key];
+        } else {
+          if (options.ignoreUnsetVars) {
+            buffer += str.slice(j, j + length + 1);
+          }
+        }
       }
       j += length;
       i = j + 1;
@@ -51,6 +75,7 @@ export function explode(
  *
  * @param {string} str - A string that may contain environment variable references to be explodeed in the form of `${key}`
  * or `$key` where `key` is an environment variable.
+ * @param options - The `options` parameter is an optional object that can be used to configure the behavior of the `explode`
  * @returns The string with the environment variables explodeed.
  * Keys with no corresponding environment variable will be replaced with an empty string.
  *
@@ -60,8 +85,11 @@ export function explode(
  * @example
  * explodeEnv("Hello, ${USER}!"); // "Hello, username!"
  */
-export function explodeEnv(str: string): string {
-  return explode(str, process.env);
+export function explodeEnv(
+  str: string,
+  options: Options = DEFAULT_OPTIONS
+): string {
+  return explode(str, process.env, options);
 }
 
 function getTemplateKey(str: string): { key: string; length: number } {
