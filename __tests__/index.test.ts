@@ -84,25 +84,28 @@ describe("explode", () => {
     });
 
     describe("when it has default value", () => {
-      describe("var === ${key:=default}", () => {
+      describe.each([
+        { input: "Hello, ${name:=World}!" },
+        { input: "Hello, ${name:-World}!" },
+      ])("When in the form of $input", ({ input }) => {
         describe("when key is in mapping", () => {
           it("should replace the template with the value from the object", () => {
-            expect(explode("Hello, ${name:=World}!", { name: "Osama" })).toBe(
-              "Hello, Osama!"
-            );
+            expect(explode(input, { name: "Osama" })).toBe("Hello, Osama!");
           });
         });
 
         describe("when key is not in mapping", () => {
           it("should replace the template with the value from the object", () => {
-            expect(explode("Hello, ${name:=World}!", {})).toBe("Hello, World!");
+            expect(explode(input, {})).toBe("Hello, World!");
           });
+        });
+      });
 
-          it("should replace other instances with the same value", () => {
-            expect(
-              explode("Hello, ${name:=World}! My name is ${name}.", {})
-            ).toBe("Hello, World! My name is World.");
-          });
+      describe("when in form of ${key:=default}", () => {
+        it("should replace following instances with the same value", () => {
+          expect(
+            explode("Hello, ${name:=World}! My name is ${name}.", {})
+          ).toBe("Hello, World! My name is World.");
         });
       });
 
