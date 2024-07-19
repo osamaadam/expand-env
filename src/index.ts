@@ -38,7 +38,7 @@ const DEFAULT_OPTIONS: Options = {
  * where `key` is a key that corresponds to a value in the `mapping` object.
  * The function `explode` replaces these placeholders with the
  * corresponding values from the `mapping` object and returns the explodeed
- * @param mapping - The `mapping` parameter is an object that maps keys to their corresponding values. In the `explode`
+ * @param m - The `mapping` parameter is an object that maps keys to their corresponding values. In the `explode`
  * function, it is used to replace placeholders in the `str` parameter with actual values. If a key in the mapping object
  * matches a placeholder in the string, the placeholder is replaced with the corresponding
  * @param options - The `options` parameter is an optional object that can be used to configure the behavior of the `explode`
@@ -56,6 +56,7 @@ export function explode(
   mapping: Record<string, string | undefined>,
   options: Options = DEFAULT_OPTIONS
 ): string {
+  const m = { ...mapping };
   let buffer = "";
   let i = 0;
   for (let j = 0; j < str.length; j++) {
@@ -67,8 +68,8 @@ export function explode(
         buffer += str.slice(j, j + length + 1);
       } else {
         const [realKey, defaultValue] = key.split(/:=|:-/);
-        if (realKey in mapping) {
-          buffer += mapping[realKey];
+        if (realKey in m) {
+          buffer += m[realKey];
         } else {
           if (defaultValue && !options.ignoreDefaultExpansion) {
             buffer += defaultValue;
@@ -79,12 +80,12 @@ export function explode(
 
         if (
           !options.ignoreDefaultExpansion &&
-          !(realKey in mapping) &&
+          !(realKey in m) &&
           defaultValue?.length &&
           key.includes(":=")
         ) {
           // Add the default to the mapping if the key is set like ${key:=default}
-          mapping[realKey] = defaultValue;
+          m[realKey] = defaultValue;
         }
       }
       j += length;

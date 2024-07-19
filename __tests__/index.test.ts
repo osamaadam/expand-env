@@ -107,6 +107,14 @@ describe("explode", () => {
             explode("Hello, ${name:=World}! My name is ${name}.", {})
           ).toBe("Hello, World! My name is World.");
         });
+        it("it should not modify input mapping object", () => {
+          const mapping = {};
+
+          expect(explode("Hello, ${name:=World}!", mapping)).toBe(
+            "Hello, World!"
+          );
+          expect(mapping).toEqual({});
+        });
       });
 
       describe("var === ${key:-default}", () => {
