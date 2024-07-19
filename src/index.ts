@@ -49,12 +49,24 @@ export function explode(
         // $ not followed by a valid template, just add the $ to the buffer
         buffer += str.slice(j, j + length + 1);
       } else {
-        if (key in mapping) {
-          buffer += mapping[key];
+        const [realKey, defaultValue] = key.split(/:=|:-/);
+        if (realKey in mapping) {
+          buffer += mapping[realKey];
         } else {
-          if (options.ignoreUnsetVars) {
+          if (defaultValue) {
+            buffer += defaultValue;
+          } else if (options.ignoreUnsetVars) {
             buffer += str.slice(j, j + length + 1);
           }
+        }
+
+        if (
+          !(realKey in mapping) &&
+          defaultValue?.length &&
+          key.includes(":=")
+        ) {
+          // Add the default to the mapping if the key is set like ${key:=default}
+          mapping[realKey] = defaultValue;
         }
       }
       j += length;

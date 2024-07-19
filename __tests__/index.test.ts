@@ -83,6 +83,52 @@ describe("explode", () => {
       });
     });
 
+    describe("when it has default value", () => {
+      describe("var === ${key:=default}", () => {
+        describe("when key is in mapping", () => {
+          it("should replace the template with the value from the object", () => {
+            expect(explode("Hello, ${name:=World}!", { name: "Osama" })).toBe(
+              "Hello, Osama!"
+            );
+          });
+        });
+
+        describe("when key is not in mapping", () => {
+          it("should replace the template with the value from the object", () => {
+            expect(explode("Hello, ${name:=World}!", {})).toBe("Hello, World!");
+          });
+
+          it("should replace other instances with the same value", () => {
+            expect(
+              explode("Hello, ${name:=World}! My name is ${name}.", {})
+            ).toBe("Hello, World! My name is World.");
+          });
+        });
+      });
+
+      describe("var === ${key:-default}", () => {
+        describe("when key is in mapping", () => {
+          it("should replace the template with the value from the object", () => {
+            expect(explode("Hello, ${name:-World}!", { name: "Osama" })).toBe(
+              "Hello, Osama!"
+            );
+          });
+        });
+
+        describe("when key is not in mapping", () => {
+          it("should replace the template with the value from the object", () => {
+            expect(explode("Hello, ${name:-World}!", {})).toBe("Hello, World!");
+          });
+
+          it("should NOT replace other instances with the same value", () => {
+            expect(
+              explode("Hello, ${name:-World}! My name is ${name}.", {})
+            ).toBe("Hello, World! My name is .");
+          });
+        });
+      });
+    });
+
     describe("options", () => {
       describe("ignoreUnsetVars", () => {
         describe("when true", () => {
@@ -100,6 +146,11 @@ describe("explode", () => {
         describe("when not set", () => {
           it("should replace the template with an empty string", () => {
             expect(explode("Hello, $name!", {})).toBe("Hello, !");
+          });
+        });
+        describe("when key has default value", () => {
+          it("should replace the value from the default", () => {
+            expect(explode("Hello, ${name:=World}!", {})).toBe("Hello, World!");
           });
         });
       });
