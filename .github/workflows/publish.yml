@@ -5,11 +5,13 @@ on:
       - "Run Tests"
     types:
       - completed
+    branches:
+      - master
 
 jobs:
   publish:
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' && github.ref_type == 'tag' }}
+    if: ${{ github.event.workflow_run.conclusion == 'success' && github.ref_type == 'tag' && github.ref == 'refs/heads/master' }}
     steps:
       - uses: actions/checkout@v4
       - name: Use Node.js
